@@ -5,12 +5,31 @@ FROM debian:buster
 
 /*installation des paquets */
 RUN apt-get update \
-    && ap-get install -y \
+	&& ap-get install -y \
+	wget
+
+/*recherche et installation de wget */
+
+RUN apt-get update \
+	&& ap-get install -y \
 	nginx
 
+COPY 
 /*recherche et installation de nginx */
 
+RUN apt-get update \
+	&& apt-get install -y \
+	mariadb-server
 
-Copy nginx.conf /etc/nginx/nginx.conf
+/*recherche et installation de mysql*/
 
-/*copy des configurations et scripts du systeme hote vers l'image */
+RUN apt-get -y install php-fpm php-common php-mysql php-cli \
+				php-mbstring php-gd php-xml php-intl php-zip php-curl
+
+RUN service php7.3-fpm start
+
+/*installation service php*/
+
+EXPOSE 80
+
+/*exposition du port 80:80*/
