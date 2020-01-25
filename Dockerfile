@@ -1,33 +1,22 @@
 FROM debian:buster
 
-/*image utiliser pour le container debian buster voir le sujet */
-/*mise a jour*/
-RUN apt-get update
+# mise a jour et instllation despackage
+RUN apt-get update -y \
+	&& apt-get install -y nginx \
+        && apt-get install -y php7.3 php7.3-fpm php7.3-mysql php-common php7.3-cli php7.3-common php7.3-json php7.3-opcache php7.3-readline \
+	&& apt-get install -y openssl \
+	&& apt-get install -y wget \
 
+# copie de la configuration utile du server
+COPY ./srcs/defaults /etc/nginx/sites-available/
 
-/*installation des paquets */
-RUN ap-get install -y \
-	wget
+#rajout du .sh de lancement dans bin et on donne les droits
+ADD srcs/start.sh /usr/bin/start.sh
+RUN chmod 755 /usr/bin/start.sh
 
-/*recherche et installation de wget */
-
-RUN apt-get install -y \
-	nginx
-
-/*recherche et installation de nginx */
-
-RUN apt-get install -y \
-	mariadb-server
-
-/*recherche et installation de mysql*/
-
-/*installation service php*/
-RUN apt-get -y install php-fpm php-common php-mysql php-cli \
-				php-mbstring php-gd php-xml php-intl php-zip php-curl
-
-RUN service php7.3-fpm start
-
-
-/*exposition du port 80:80*/
 EXPOSE 80
+EXPOSE 443
+
+#lancement du sh
+ENTRYPOINT  ["start.sh"]
 
