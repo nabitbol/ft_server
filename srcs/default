@@ -37,6 +37,8 @@ server {
 	# Don't use them in a production server!
 	#
 	# include snippets/snakeoil.conf;
+	include snippets/self-signed.conf;
+    	include snippets/ssl-params.conf;
 
 	root /var/www/html;
 
